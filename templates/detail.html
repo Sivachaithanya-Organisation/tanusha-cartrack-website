@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}{{ car.name }} — VELOCE{% endblock %}
+
+{% block extra_styles %}
+.detail-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem; }
+.breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 2rem; letter-spacing: 0.08em; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--text); }
+.detail-grid { display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: start; }
+.car-visual-large {
+  background: linear-gradient(135deg, {{ car.image_color }}20 0%, {{ car.image_color }}05 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3rem 2rem;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 320px;
+}
+.detail-brand { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 0.5rem; }
+.detail-name { font-family: var(--font-display); font-size: 3.5rem; line-height: 1; letter-spacing: 0.03em; margin-bottom: 1rem; }
+.detail-engine { font-size: 14px; color: var(--muted); margin-bottom: 2rem; }
+.detail-price { font-family: var(--font-display); font-size: 2.8rem; margin-bottom: 0.3rem; }
+.detail-price-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 2rem; }
+
+.specs-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+.spec-cell {
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+}
+.spec-cell-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.3rem; }
+.spec-cell-val { font-family: var(--font-mono); font-size: 18px; font-weight: 500; }
+.spec-cell-val span { font-family: var(--font-body); font-size: 11px; color: var(--muted); margin-left: 3px; }
+
+.action-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem;
+  position: sticky;
+  top: 80px;
+}
+.color-dot { width: 16px; height: 16px; border-radius: 50%; background: {{ car.image_color }}; display: inline-block; margin-right: 0.5rem; vertical-align: middle; }
+.stock-indicator {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 13px;
+  margin-bottom: 1.5rem;
+}
+.stock-dot { width: 8px; height: 8px; border-radius: 50%; }
+.stock-dot.green { background: #4CAF50; box-shadow: 0 0 8px #4CAF5088; }
+.stock-dot.red { background: var(--red); }
+.action-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+.action-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 0.6rem; }
+.action-row strong { color: var(--text); font-weight: 500; }
+{% endblock %}
+
+{% block content %}
+<div class="detail-wrap">
+  <div class="breadcrumb">
+    <a href="/">Home</a> &nbsp;›&nbsp; <a href="/">Inventory</a> &nbsp;›&nbsp; {{ car.name }}
+  </div>
+
+  <div class="detail-grid">
+    <!-- LEFT: Visual + Specs -->
+    <div>
+      <div class="car-visual-large">
+        <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:220px;">
+          <g transform="translate(30,30)">
+            <ellipse cx="220" cy="130" rx="200" ry="28" fill="{{ car.image_color }}15"/>
+            <path d="M20 122 Q20 95 45 85 L100 60 Q140 38 220 35 Q295 35 320 48 L400 90 Q430 102 435 122 Z"
+                  fill="{{ car.image_color }}" opacity="0.92"/>
+            <path d="M108 60 Q138 40 210 37 Q270 37 285 48 L320 70 Q270 72 108 72 Z"
+                  fill="{{ car.image_color }}44" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <rect x="10" y="122" width="430" height="6" rx="3" fill="{{ car.image_color }}30"/>
+            <circle cx="100" cy="130" r="26" fill="#0d0d0d" stroke="{{ car.image_color }}" stroke-width="3"/>
+            <circle cx="100" cy="130" r="13" fill="#1a1a1a" stroke="{{ car.image_color }}99" stroke-width="2.5"/>
+            <line x1="100" y1="117" x2="100" y2="143" stroke="{{ car.image_color }}66" stroke-width="1.5"/>
+            <line x1="87" y1="130" x2="113" y2="130" stroke="{{ car.image_color }}66" stroke-width="1.5"/>
+            <circle cx="330" cy="130" r="26" fill="#0d0d0d" stroke="{{ car.image_color }}" stroke-width="3"/>
+            <circle cx="330" cy="130" r="13" fill="#1a1a1a" stroke="{{ car.image_color }}99" stroke-width="2.5"/>
+            <line x1="330" y1="117" x2="330" y2="143" stroke="{{ car.image_color }}66" stroke-width="1.5"/>
+            <line x1="317" y1="130" x2="343" y2="130" stroke="{{ car.image_color }}66" stroke-width="1.5"/>
+            <ellipse cx="428" cy="108" rx="9" ry="6" fill="white" opacity="0.8"/>
+            <ellipse cx="418" cy="112" rx="5" ry="3.5" fill="white" opacity="0.5"/>
+            <path d="M20 110 Q12 118 10 122 L30 122 Z" fill="{{ car.image_color }}" opacity="0.7"/>
+            <rect x="430" y="118" width="12" height="4" rx="1" fill="{{ car.image_color }}80"/>
+          </g>
+        </svg>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <div class="detail-brand">{{ car.brand }} · {{ car.year }} · {{ car.category|title }}</div>
+        <div class="detail-name">{{ car.name }}</div>
+        <div class="detail-engine">{{ car.engine }} · {{ car.color }}</div>
+      </div>
+
+      <div class="specs-grid">
+        <div class="spec-cell">
+          <div class="spec-cell-label">Horsepower</div>
+          <div class="spec-cell-val">{{ car.horsepower }}<span>hp</span></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">0 to 100 km/h</div>
+          <div class="spec-cell-val">{{ car['0_to_100'] }}<span>sec</span></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">Top Speed</div>
+          <div class="spec-cell-val">{{ car.top_speed }}<span>km/h</span></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">Engine</div>
+          <div class="spec-cell-val" style="font-size:13px;font-family:var(--font-body);">{{ car.engine }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Purchase panel -->
+    <div>
+      <div class="action-panel">
+        <div class="detail-brand" style="margin-bottom:0.3rem;">Purchase</div>
+        <div class="detail-price">${{ "{:,}".format(car.price) }}</div>
+        <div class="detail-price-label">Starting price (USD)</div>
+
+        <div class="stock-indicator">
+          <div class="stock-dot {% if car.in_stock %}green{% else %}red{% endif %}"></div>
+          {% if car.in_stock %}In Stock — Ready to Order{% else %}Out of Stock — Notify Me{% endif %}
+        </div>
+
+        <div style="font-size:13px;color:var(--muted);margin-bottom:1.2rem;">
+          <span class="color-dot"></span>{{ car.color }}
+        </div>
+
+        {% if car.in_stock %}
+        <button class="btn-primary" style="width:100%;justify-content:center;margin-bottom:0.75rem;"
+                onclick="addToCart({{ car.id }})">
+          Add to Cart →
+        </button>
+        <a href="/cart">
+          <button class="btn-outline" style="width:100%;justify-content:center;">View Cart</button>
+        </a>
+        {% else %}
+        <button class="btn-outline" style="width:100%;justify-content:center;opacity:0.5;cursor:not-allowed;" disabled>
+          Currently Unavailable
+        </button>
+        {% endif %}
+
+        <div class="action-divider"></div>
+        <div class="action-row"><span>Category</span><strong>{{ car.category|title }}</strong></div>
+        <div class="action-row"><span>Model Year</span><strong>{{ car.year }}</strong></div>
+        <div class="action-row"><span>Delivery</span><strong>8–12 weeks</strong></div>
+        <div class="action-row"><span>Warranty</span><strong>3 years</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+async function addToCart(carId) {
+  const res = await fetch('/api/cart/add', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({car_id: carId})
+  });
+  const data = await res.json();
+  document.getElementById('nav-cart-count').textContent = data.count;
+  alert('Added to cart! 🏎️');
+}
+</script>
+{% endblock %}

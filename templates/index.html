@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+{% block title %}VELOCE — Luxury Sports Cars{% endblock %}
+
+{% block extra_styles %}
+.hero {
+  position: relative;
+  padding: 7rem 3rem 5rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 60%;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(230,48,48,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  line-height: 0.93;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { color: var(--red); font-style: normal; }
+.hero-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 460px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+.hero-stats {
+  display: flex; gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--text);
+}
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.filter-tabs { display: flex; gap: 0.5rem; }
+.filter-tab {
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.filter-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+.filter-tab.active { background: var(--red); color: white; border-color: var(--red); }
+.sort-select {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* GRID */
+.cars-section { padding: 2.5rem 3rem; }
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.car-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.car-card:hover {
+  border-color: rgba(230,48,48,0.4);
+  transform: translateY(-3px);
+}
+.car-card-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.car-svg-wrap {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.car-card-badge {
+  position: absolute;
+  top: 12px; left: 12px;
+}
+.out-of-stock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.car-card-body { padding: 1.2rem 1.4rem 1.4rem; }
+.car-brand {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.car-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.75rem;
+}
+.car-specs {
+  display: flex; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.spec { text-align: center; flex: 1; }
+.spec-val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+.spec-unit { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.car-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.car-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.car-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+}
+.car-price small {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--muted);
+  display: block;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.add-btn {
+  background: rgba(230,48,48,0.1);
+  color: var(--red);
+  border: 1px solid rgba(230,48,48,0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.add-btn:hover { background: rgba(230,48,48,0.2); border-color: rgba(230,48,48,0.6); }
+.add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+}
+.section-sub { color: var(--muted); font-size: 14px; margin-bottom: 2rem; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--surface2);
+  border: 1px solid rgba(230,48,48,0.4);
+  color: var(--text);
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Veloce Motors — Exclusive Dealership</p>
+  <h1>DRIVE<br>THE <em>LEGEND</em></h1>
+  <p class="hero-sub">Hand-picked hypercars and supercars, delivered to your door. Configure, purchase, and own the machine of your dreams.</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+    <a href="#inventory" class="btn-primary">View Inventory →</a>
+    <button class="btn-outline" onclick="document.getElementById('inventory').scrollIntoView({behavior:'smooth'})">Learn More</button>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-value">{{ cars|length }}</div>
+      <div class="stat-label">Cars Available</div>
+    </div>
+    <div>
+      <div class="stat-value">6</div>
+      <div class="stat-label">Top Brands</div>
+    </div>
+    <div>
+      <div class="stat-value">24H</div>
+      <div class="stat-label">Response Time</div>
+    </div>
+    <div>
+      <div class="stat-value">1,479</div>
+      <div class="stat-label">Max Horsepower</div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="inventory">
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-cat="all">All</button>
+    <button class="filter-tab" data-cat="sports">Sports</button>
+    <button class="filter-tab" data-cat="supercar">Supercar</button>
+    <button class="filter-tab" data-cat="hypercar">Hypercar</button>
+  </div>
+  <select class="sort-select" id="sort-select">
+    <option value="default">Sort: Default</option>
+    <option value="price_asc">Price: Low → High</option>
+    <option value="price_desc">Price: High → Low</option>
+    <option value="hp">Horsepower</option>
+  </select>
+</div>
+
+<!-- CARS GRID -->
+<section class="cars-section">
+  <div class="cars-grid" id="cars-grid">
+    {% for car in cars %}
+    <div class="car-card" onclick="window.location='/car/{{ car.id }}'">
+      <div class="car-card-visual" style="background: linear-gradient(135deg, {{ car.image_color }}18 0%, {{ car.image_color }}05 100%);">
+        <svg viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg" style="width:90%;max-height:120px;">
+          <!-- Sports car silhouette SVG -->
+          <g transform="translate(20,20)">
+            <!-- Body -->
+            <ellipse cx="120" cy="72" rx="108" ry="20" fill="{{ car.image_color }}22"/>
+            <path d="M15 68 Q15 55 30 50 L60 38 Q80 25 120 23 Q160 23 175 30 L215 52 Q228 58 232 68 Z"
+                  fill="{{ car.image_color }}" opacity="0.9"/>
+            <!-- Windows -->
+            <path d="M65 38 Q80 27 115 25 Q145 25 155 30 L175 43 Q155 43 65 43 Z"
+                  fill="{{ car.image_color }}55" stroke="white" stroke-width="0.5" opacity="0.6"/>
+            <!-- Ground -->
+            <rect x="5" y="68" width="234" height="4" rx="2" fill="{{ car.image_color }}33"/>
+            <!-- Wheels -->
+            <circle cx="60" cy="72" r="16" fill="#111" stroke="{{ car.image_color }}" stroke-width="2"/>
+            <circle cx="60" cy="72" r="8" fill="#222" stroke="{{ car.image_color }}88" stroke-width="1.5"/>
+            <circle cx="180" cy="72" r="16" fill="#111" stroke="{{ car.image_color }}" stroke-width="2"/>
+            <circle cx="180" cy="72" r="8" fill="#222" stroke="{{ car.image_color }}88" stroke-width="1.5"/>
+            <!-- Headlight -->
+            <ellipse cx="225" cy="60" rx="6" ry="4" fill="white" opacity="0.7"/>
+            <!-- Tail -->
+            <path d="M15 62 Q10 65 8 68 L20 68 Z" fill="{{ car.image_color }}" opacity="0.7"/>
+          </g>
+        </svg>
+        <div class="car-card-badge">
+          {% if car.badge == 'BESTSELLER' %}<span class="tag tag-gold">{{ car.badge }}</span>
+          {% elif car.badge == 'LIMITED' or car.badge == 'ULTRA RARE' %}<span class="tag tag-red">{{ car.badge }}</span>
+          {% else %}<span class="tag tag-gray">{{ car.badge }}</span>{% endif %}
+        </div>
+        {% if not car.in_stock %}
+        <div class="out-of-stock-overlay">Out of Stock</div>
+        {% endif %}
+      </div>
+      <div class="car-card-body">
+        <div class="car-brand">{{ car.brand }} · {{ car.year }}</div>
+        <div class="car-name">{{ car.name }}</div>
+        <div class="car-specs">
+          <div class="spec">
+            <div class="spec-val">{{ car.horsepower }}</div>
+            <div class="spec-unit">HP</div>
+          </div>
+          <div class="spec">
+            <div class="spec-val">{{ car['0_to_100'] }}s</div>
+            <div class="spec-unit">0–100</div>
+          </div>
+          <div class="spec">
+            <div class="spec-val">{{ car.top_speed }}</div>
+            <div class="spec-unit">km/h</div>
+          </div>
+        </div>
+        <div class="car-divider"></div>
+        <div class="car-footer">
+          <div class="car-price">
+            <small>Starting at</small>
+            ${{ "{:,}".format(car.price) }}
+          </div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart({{ car.id }}, this)" {% if not car.in_stock %}disabled{% endif %}>
+            + Add
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="toast" id="toast">✓ Added to cart</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const allCars = {{ cars|tojson }};
+
+async function addToCart(carId, btn) {
+  const res = await fetch('/api/cart/add', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({car_id: carId})
+  });
+  const data = await res.json();
+  document.getElementById('nav-cart-count').textContent = data.count;
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+let currentCat = 'all', currentSort = 'default';
+
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentCat = tab.dataset.cat;
+    fetchAndRender();
+  });
+});
+
+document.getElementById('sort-select').addEventListener('change', e => {
+  currentSort = e.target.value;
+  fetchAndRender();
+});
+
+async function fetchAndRender() {
+  const res = await fetch(`/api/filter?category=${currentCat}&sort=${currentSort}`);
+  const cars = await res.json();
+  const grid = document.getElementById('cars-grid');
+  grid.innerHTML = cars.map(car => `
+    <div class="car-card" onclick="window.location='/car/${car.id}'">
+      <div class="car-card-visual" style="background: linear-gradient(135deg, ${car.image_color}18 0%, ${car.image_color}05 100%);">
+        <svg viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg" style="width:90%;max-height:120px;">
+          <g transform="translate(20,20)">
+            <ellipse cx="120" cy="72" rx="108" ry="20" fill="${car.image_color}22"/>
+            <path d="M15 68 Q15 55 30 50 L60 38 Q80 25 120 23 Q160 23 175 30 L215 52 Q228 58 232 68 Z" fill="${car.image_color}" opacity="0.9"/>
+            <path d="M65 38 Q80 27 115 25 Q145 25 155 30 L175 43 Q155 43 65 43 Z" fill="${car.image_color}55" stroke="white" stroke-width="0.5" opacity="0.6"/>
+            <rect x="5" y="68" width="234" height="4" rx="2" fill="${car.image_color}33"/>
+            <circle cx="60" cy="72" r="16" fill="#111" stroke="${car.image_color}" stroke-width="2"/>
+            <circle cx="60" cy="72" r="8" fill="#222" stroke="${car.image_color}88" stroke-width="1.5"/>
+            <circle cx="180" cy="72" r="16" fill="#111" stroke="${car.image_color}" stroke-width="2"/>
+            <circle cx="180" cy="72" r="8" fill="#222" stroke="${car.image_color}88" stroke-width="1.5"/>
+            <ellipse cx="225" cy="60" rx="6" ry="4" fill="white" opacity="0.7"/>
+          </g>
+        </svg>
+        <div class="car-card-badge">
+          <span class="tag ${car.badge === 'BESTSELLER' ? 'tag-gold' : (car.badge === 'LIMITED' || car.badge === 'ULTRA RARE') ? 'tag-red' : 'tag-gray'}">${car.badge}</span>
+        </div>
+        ${!car.in_stock ? '<div class="out-of-stock-overlay">Out of Stock</div>' : ''}
+      </div>
+      <div class="car-card-body">
+        <div class="car-brand">${car.brand} · ${car.year}</div>
+        <div class="car-name">${car.name}</div>
+        <div class="car-specs">
+          <div class="spec"><div class="spec-val">${car.horsepower}</div><div class="spec-unit">HP</div></div>
+          <div class="spec"><div class="spec-val">${car['0_to_100']}s</div><div class="spec-unit">0–100</div></div>
+          <div class="spec"><div class="spec-val">${car.top_speed}</div><div class="spec-unit">km/h</div></div>
+        </div>
+        <div class="car-divider"></div>
+        <div class="car-footer">
+          <div class="car-price"><small>Starting at</small>$${car.price.toLocaleString()}</div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart(${car.id}, this)" ${!car.in_stock ? 'disabled' : ''}>+ Add</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+{% endblock %}
