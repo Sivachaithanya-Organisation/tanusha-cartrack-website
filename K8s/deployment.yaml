@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "sportscar-track"
-          image: "794934876309.dkr.ecr.us-west-2.amazonaws.com/tanusha-k8s-project:IMAGE_ID"
+          image: "794934876309.dkr.ecr.us-west-2.amazonaws.com/kalyan-k8s:IMAGE_ID"
           ports:
             - containerPort: 5000
           resources:
