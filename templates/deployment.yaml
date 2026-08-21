@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "my-app.fullname" . }}
+  name: {{ include "sportscar.fullname" . }}
   labels:
-    {{- include "my-app.labels" . | nindent 4 }}
+    {{- include "sportscar.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "my-app.selectorLabels" . | nindent 6 }}
+      {{- include "sportscar.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "my-app.selectorLabels" . | nindent 8 }}
+        {{- include "sportscar.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
