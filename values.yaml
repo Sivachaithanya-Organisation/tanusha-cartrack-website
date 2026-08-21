@@ -3,6 +3,7 @@ replicaCount: 2
 image:
   repository: 794934876309.dkr.ecr.us-west-2.amazonaws.com/siva-k8s
   tag: "${{ github.sha }}"
+  pullPolicy: Always
 
 service:
   type: ClusterIP
@@ -20,10 +21,6 @@ ingress:
   host: cars.sivadevops.cloud
   path: /
   pathType: Prefix
-
-service:
-  name: sportscar-track
-  port: 80
 
   tls: []
 
