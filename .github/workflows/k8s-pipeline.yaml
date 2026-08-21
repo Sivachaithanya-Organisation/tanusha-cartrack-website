@@ -1,4 +1,4 @@
-name: Tanusha K8s Deployment
+name: K8s Deployment
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Build, Tag, and Push Docker Image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: kalyan-k8s
+          REPOSITORY: siva-k8s
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
@@ -52,7 +52,7 @@ jobs:
 
       - name: configure EKS cluster with kubectl
         run: |
-          aws eks update-kubeconfig --region us-west-2 --name Sample-EKS-Cluster
+          aws eks update-kubeconfig --region us-west-2 --name SampleCluster
       
       - name: replacing the image-id with github.sha
         run: |
