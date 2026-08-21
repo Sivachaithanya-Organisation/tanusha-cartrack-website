@@ -23,7 +23,7 @@ spec:
             pathType: {{ .Values.ingress.pathType }}
             backend:
               service:
-                name: {{ .Values.service.name }}
+                name: {{ include "sportscar.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}
 {{- end }}
