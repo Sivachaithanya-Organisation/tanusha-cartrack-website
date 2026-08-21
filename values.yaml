@@ -1,0 +1,36 @@
+replicaCount: 2
+
+image:
+  repository: 794934876309.dkr.ecr.us-west-2.amazonaws.com/siva-k8s
+  tag: "${{ github.sha }}"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+ingress:
+  enabled: true
+  class: alb
+  scheme: internet-facing
+  targetType: ip
+  listenPorts: '[{"HTTP": 80},{"HTTPS": 443}]'
+  sslRedirect: "443"
+  certificateArn: arn:aws:acm:us-west-2:794934876309:certificate/641080d5-eabc-4f04-9b98-882355adc2b2
+  host: cars.sivadevops.cloud
+  path: /
+  pathType: Prefix
+
+service:
+  name: sportscar-track
+  port: 80
+
+  tls: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
