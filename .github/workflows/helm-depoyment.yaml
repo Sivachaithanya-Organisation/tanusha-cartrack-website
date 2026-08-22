@@ -76,4 +76,5 @@ jobs:
           helm upgrade --install $HELM_RELEASE_NAME $HELM_CHART_PATH \
             --namespace $K8S_NAMESPACE \
             --wait \
+            --set image.tag=${{ github.sha }} \
             --timeout 2m
