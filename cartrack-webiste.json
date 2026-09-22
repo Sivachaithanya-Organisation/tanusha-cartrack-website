@@ -1,0 +1,96 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-west-2:517293881035:task-definition/siva-task-definition:2",
+    "containerDefinitions": [
+        {
+            "name": "siva-container",
+            "image": "517293881035.dkr.ecr.us-west-2.amazonaws.com/siva-ansible@sha256:28208656c9b727578e52971e9ea343f6cb21b8e301b2def0a2ff0ab993d36884",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "name": "siva-port",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/siva-task-definition",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-west-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "siva-task-definition",
+    "taskRoleArn": "arn:aws:iam::517293881035:role/ECSTaskRole",
+    "executionRoleArn": "arn:aws:iam::517293881035:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "ecs.capability.extensible-ephemeral-storage"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "registeredAt": "2026-09-21T04:16:52.213Z",
+    "registeredBy": "arn:aws:iam::517293881035:user/siva-aws",
+    "ephemeralStorage": {
+        "sizeInGiB": 30
+    },
+    "enableFaultInjection": false,
+    "tags": []
+}
